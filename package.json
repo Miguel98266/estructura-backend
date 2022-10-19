@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Miguel98266/estructura-backend.git"
@@ -16,5 +17,9 @@
   "bugs": {
     "url": "https://github.com/Miguel98266/estructura-backend/issues"
   },
-  "homepage": "https://github.com/Miguel98266/estructura-backend#readme"
+  "homepage": "https://github.com/Miguel98266/estructura-backend#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "mongoose": "^6.6.5"
+  }
 }
