@@ -1,0 +1,29 @@
+user
+    name
+    lastname
+    birthday
+    address
+    role
+    phone
+    contacts
+    email
+    password
+
+book
+    title
+    editorial
+    edition
+    pageNumber
+    isbn
+
+author
+    name
+    lastname
+    nacionalidad
+    birthday
+
+loan
+    startDate
+    endDate
+    user
+    [book]
