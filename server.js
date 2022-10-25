@@ -6,9 +6,9 @@ const server=http.createServer(api)
 
 server.on('error',(error)=>{
     if(error.code==='EADDRINUSE'){
-        console.log(`El puerto ${config.server.port} ya esta siendo usado por otra aplicacion`)
+        console.log(`El puerto ${config.server.port} ya esta siendo usado por otra aplicacion `)
     }
-    console.error('Error al iniciar el servidor en el puerto ${config.server.port}')
+    console.error('Error al iniciar el servidor en el puerto ${config.server.port} ')
 })
 
 server.on('listening',()=>{
