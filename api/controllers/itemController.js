@@ -36,12 +36,34 @@ const read = async (req, res) => {
     });
   }
 };
+const readOne = async (req, res) => {
+  try {
+    const {id}=req.params;
+    const items = await Item.findById(id);
+    return res.json(items);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Error al busca item",
+      error,
+    });
+  }
+};
+const readFilter = async (req, res) => {
+  try {
+    console.log(req.query)
+    const items = await Item.find(req.query);
+    return res.json(items);
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Error al busca item filtrado",
+      error,
+    });
+  }
+};
 const update = async (req, res) => {
   try {
-    const itemupdated = await Item.findByIdAndUpdate(req.params.id, {
-      stock: req.body.stock,
-    });
-    return res.json(itemupdated);
+    const itemupdated = await Item.findByIdAndUpdate(req.params.id, req.body,{new:true});
+    return res.json({msg:"Item modificado",itemupdated});
   } catch (error) {
     return res.status(500).json({
       msg: "Error al actualizar item",
@@ -52,7 +74,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const itemremoved = await Item.findByIdAndDelete(req.params.id);
-    return res.json(itemremoved);
+    return res.json(itemremoved, { msg: "Usuario eliminado correctamente" });
   } catch (error) {
     return res.status(500).json({
       msg: "Error al borrar item",
@@ -61,4 +83,4 @@ const remove = async (req, res) => {
   }
 };
 
-export { create, read, update, remove };
+export { create, read, readOne, readFilter, update, remove };
