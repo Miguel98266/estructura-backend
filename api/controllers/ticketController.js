@@ -16,7 +16,7 @@ const create = async (req, res) => {
 };
 const read = async (req, res) => {
   try {
-    const readAll = await Ticket.find(req.query).populate("user");
+    const readAll = await Ticket.find(req.query).populate("items user");
     return res.json({
       msg: "Tickets encontrados satisfactoriamente",
       readAll,
@@ -30,8 +30,14 @@ const read = async (req, res) => {
 };
 const readOne = async (req, res) => {
   try {
-    const {id}=req.params;
-    const readOneTicket = await Ticket.findById(id).populate('user');
+    const { id } = req.params;
+    const readOneTicket = await Ticket.findById(id).populate("items user");
+
+    if (!readOneTicket) {
+      return res.status(404).json({
+        msg: "Ticket no encontrado",
+      });
+    }
     return res.json({
       msg: "Ticket encontrado",
       readOneTicket,
@@ -39,6 +45,32 @@ const readOne = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       msg: "Error al encontrar ticket",
+      error,
+    });
+  }
+};
+const sumField = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { items } = await Ticket.findById(id).populate("items");
+    // array.reduce(function(total, currentValue, currentIndex), initialValue)
+    const subtotal = items.reduce((total, current) => {
+      return total + current.price;
+    },0);
+    const tax = subtotal * 0.16;
+    const total = subtotal + tax;
+    const updated = await Ticket.findByIdAndUpdate(
+      id,
+      { subtotal, tax, total },
+      { new: true }
+    ).populate("items");
+    return res.json({
+      msg: "Ticket calculado correctamente",
+      updated,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      msg: "Error al buscar tickets",
       error,
     });
   }
@@ -74,4 +106,4 @@ const remove = async (req, res) => {
   }
 };
 
-export { create, read, readOne, update, remove };
+export { create, read, readOne, update, remove, sumField };
